@@ -30,7 +30,7 @@ if (!Number.isFinite(parseInt(leaderBoard))) {
     throw "leaderboard not given"
 }
 const url = `https://adventofcode.com/${year}/leaderboard/private/view/${leaderBoard}.json`;
-const data = await getJson(url) as LeaderboardResponse;
+const data = await getJson<LeaderboardResponse>(url);
 const memberData: Record<string, MemberData> = data.members ?? {};
 
 const members = new Map<string, Member>()
