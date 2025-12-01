@@ -1,0 +1,11 @@
+{
+  "include": ["./**/*.ts"],
+  "compilerOptions": {
+    "lib": [
+      "ES2024",
+      "dom"
+    ],
+    "module": "commonjs",
+    "target": "ES2024"
+  }
+}
