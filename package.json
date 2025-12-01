@@ -5,16 +5,15 @@
   "keywords": [],
   "author": "Stefan Temme",
   "license": "GPL-3.0-or-later",
+  "type": "module",
   "scripts": {
-    "createDay": "node scripts/createDay.mjs",
-    "showLeader": "node scripts/leaderBoard.mjs",
-    "run": "ts-node"
+    "createDay": "tsx scripts/createDay.ts",
+    "showLeader": "tsx scripts/leaderBoard.ts",
+    "run": "tsx"
   },
   "devDependencies": {
     "@types/node": "^24.10.1",
-    "ts-node": "^10.9.2",
-    "tslib": "^2.8.1",
-    "typescript": "^5.9.3"
+    "tsx": "^latest"
   },
   "dependencies": {
     "dotenv": "^17.2.3",

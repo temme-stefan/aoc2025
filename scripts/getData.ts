@@ -2,7 +2,7 @@ import {JSDOM} from "jsdom";
 import 'dotenv/config';
 import process from "node:process";
 
-async function getResponse(url){
+async function getResponse(url:string) {
     const token = process.env.SESSION_TOKEN;
     if (!token){
         console.error(`Could not fetch ${url}. Token Missing.`)
