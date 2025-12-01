@@ -1,7 +1,7 @@
 {
-  "name": "aoc2024",
+  "name": "aoc2025",
   "version": "1.0.0",
-  "description": "AdventOfCode 2024 https://adventofcode.com/2024",
+  "description": "AdventOfCode 2025 https://adventofcode.com/2025",
   "keywords": [],
   "author": "Stefan Temme",
   "license": "GPL-3.0-or-later",
@@ -11,13 +11,13 @@
     "run": "ts-node"
   },
   "devDependencies": {
-    "@types/node": "^22.10.1",
-    "ts-node": "^10.9.1",
-    "tslib": "^2.6.2",
-    "typescript": "^5.3.2"
+    "@types/node": "^24.10.1",
+    "ts-node": "^10.9.2",
+    "tslib": "^2.8.1",
+    "typescript": "^5.9.3"
   },
   "dependencies": {
-    "dotenv": "^16.4.5",
+    "dotenv": "^17.2.3",
     "jsdom": "^25.0.1"
   }
 }
