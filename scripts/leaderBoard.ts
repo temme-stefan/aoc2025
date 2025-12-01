@@ -31,7 +31,7 @@ if (!Number.isFinite(parseInt(leaderBoard))) {
 }
 const url = `https://adventofcode.com/${year}/leaderboard/private/view/${leaderBoard}.json`;
 const data = await getJson<LeaderboardResponse>(url);
-const memberData: Record<string, MemberData> = data.members ?? {};
+const memberData: Record<string, MemberData> = data?.members ?? {};
 
 const members = new Map<string, Member>()
 

@@ -12,11 +12,12 @@
     "run": "tsx"
   },
   "devDependencies": {
+    "@types/jsdom": "^27.0.0",
     "@types/node": "^24.10.1",
     "tsx": "^latest"
   },
   "dependencies": {
     "dotenv": "^17.2.3",
-    "jsdom": "^25.0.1"
+    "jsdom": "^27.2.0"
   }
 }
