@@ -9,7 +9,7 @@ L99
 R14
 L82`;
 
-export const exampleData2: string = `L150`;
+export const exampleData2: string = `L10000050`;
 export const starData: string = `R31
 R49
 L47
