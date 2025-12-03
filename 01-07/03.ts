@@ -6,7 +6,7 @@ const parse = (data: string) => {
 }
 
 const largestBatteryInBank = (bank: number[], batterieCount = 2) => {
-    const numbers:number[] = [];
+    const numbers: number[] = [];
     let leftBorder = 0;
 
     for (let i = 0; i < batterieCount; i++) {
@@ -28,8 +28,8 @@ const solve = (data: string) => {
     const batteriesByBank = parse(data);
 
     const sum1 = batteriesByBank.reduce((sum, bank) => sum + largestBatteryInBank(bank), 0);
-    const sum2 = batteriesByBank.reduce((sum, bank) => sum + largestBatteryInBank(bank,12), 0);
-    console.log("Sum of largest batteries in each bank:","\nStar1:", sum1,"\nStar2:", sum2);
+    const sum2 = batteriesByBank.reduce((sum, bank) => sum + largestBatteryInBank(bank, 12), 0);
+    console.log("Sum of largest batteries in each bank:", "\nStar1:", sum1, "\nStar2:", sum2);
 }
 console.log("Advent of Code - 2025 - 3")
 console.log("https://adventofcode.com/2025/day/3")
