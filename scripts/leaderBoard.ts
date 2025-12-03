@@ -20,6 +20,7 @@ interface MemberData {
     stars: number;
     completion_day_level: Record<string, Record<string, CompletionStar>>;
 }
+
 interface LeaderboardResponse {
     members: Record<string, MemberData>;
 }
@@ -37,7 +38,7 @@ const members = new Map<string, Member>()
 
 const starKeyToMemberTime = new Map<string, Map<string, number>>()
 Object.values(memberData).forEach(({id, name, local_score, stars, completion_day_level}: MemberData) => {
-    members.set(id, {id, name, local_score, stars});
+    members.set(id, {id, name: name ?? `anonym #${id}`, local_score, stars});
     const a = new Map(
         Object.entries(completion_day_level).flatMap(
             ([day, stars]) => Object.entries(stars).map(
