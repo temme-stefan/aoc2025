@@ -6,7 +6,7 @@ const parse = (data: string) => {
 }
 
 const largestBatteryInBank = (bank: number[], batterieCount = 2) => {
-    const numbers = [];
+    const numbers:number[] = [];
     let leftBorder = 0;
 
     for (let i = 0; i < batterieCount; i++) {
