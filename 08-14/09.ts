@@ -1,7 +1,10 @@
 import {exampleData, exampleData2, starData} from "./09-data";
 
+type TCoordinate = [number, number];
+type TEdge = [TCoordinate, TCoordinate];
+
 const parse = (data: string) => {
-    return data.split("\n").map(line => line.split(",").map(Number)) as [number, number][];
+    return data.split("\n").map(line => line.split(",").map(Number)) as TCoordinate[];
 }
 
 const pairs = <T>(arr: T[]): [T, T][] => {
@@ -14,11 +17,11 @@ const pairs = <T>(arr: T[]): [T, T][] => {
     return result;
 }
 
-const rectArea = (p1: [number, number], p2: [number, number]): number => {
+const rectArea = (p1: TCoordinate, p2: TCoordinate): number => {
     return (Math.abs(p1[0] - p2[0]) + 1) * (Math.abs(p1[1] - p2[1]) + 1);
 }
 
-const isPointInside = (point: [number, number], verticalEdges: [[number, number], [number, number]][]): boolean => {
+const isPointInside = (point: TCoordinate, verticalEdges: TEdge[]): boolean => {
     const [px, py] = point;
     let crossings = 0;
 
@@ -27,7 +30,7 @@ const isPointInside = (point: [number, number], verticalEdges: [[number, number]
 
         const minY = Math.min(y1, y2);
         const maxY = Math.max(y1, y2);
-        // Prüfen ob Strahl die Kante kreuzt
+        // Prüfe, ob Strahl die Kante kreuzt
         if (px < x1 && py >= minY && py <= maxY) {
             crossings++;
         }
@@ -36,7 +39,7 @@ const isPointInside = (point: [number, number], verticalEdges: [[number, number]
     return crossings % 2 === 1;
 }
 
-const rectCorner = (p1: [number, number], p2: [number, number]): [number, number][] => {
+const rectCorner = (p1: TCoordinate, p2: TCoordinate): TCoordinate[] => {
     const xMin = Math.min(p1[0], p2[0]);
     const xMax = Math.max(p1[0], p2[0]);
     const yMin = Math.min(p1[1], p2[1]);
@@ -50,8 +53,8 @@ const rectCorner = (p1: [number, number], p2: [number, number]): [number, number
 }
 
 const doSegmentsIntersect = (
-    seg1: [[number, number], [number, number]],
-    seg2: [[number, number], [number, number]]
+    seg1: TEdge,
+    seg2: TEdge
 ): boolean => {
     const [[x1, y1], [x2, y2]] = seg1;
     const [[x3, y3], [x4, y4]] = seg2;
@@ -65,7 +68,7 @@ const doSegmentsIntersect = (
     return t > 0 && t < 1 && u > 0 && u < 1; // echte Schnittpunkte
 };
 
-const getRectEdges = (p1: [number, number], p2: [number, number]): [[number, number], [number, number]][] => {
+const getRectEdges = (p1: TCoordinate, p2: TCoordinate): TEdge[] => {
     const corners = rectCorner(p1, p2);
     return [
         [corners[0], corners[1]],
@@ -76,8 +79,8 @@ const getRectEdges = (p1: [number, number], p2: [number, number]): [[number, num
 };
 
 const isPointOnSegment = (
-    point: [number, number],
-    seg: [[number, number], [number, number]]
+    point: TCoordinate,
+    seg: TEdge
 ): boolean => {
     const [px, py] = point;
     const [[x1, y1], [x2, y2]] = seg;
@@ -93,50 +96,46 @@ const isPointOnSegment = (
     return Math.abs(crossProduct) < 1e-10;
 };
 
+const checkPoint = (allEdges: TEdge[], point: TCoordinate, verticalEdges: TEdge[]) => {
+    let inside = true
+    let onEdge = false;
+    for (const edge of allEdges) {
+        if (isPointOnSegment(point, edge)) {
+            onEdge = true;
+            break;
+        }
+    }
+    if (!onEdge && !isPointInside(point, verticalEdges)) {
+        inside = false;
+    }
+    return inside;
+}
 const isRectInsidePolygon = (
-    p1: [number, number],
-    p2: [number, number],
-    verticalEdges: [[number, number], [number, number]][],
-    allEdges: [[number, number], [number, number]][]
+    p1: TCoordinate,
+    p2: TCoordinate,
+    verticalEdges: TEdge[],
+    allEdges: TEdge[]
 ): boolean => {
     const corners = rectCorner(p1, p2);
 
     // Prüfe alle Ecken (im Polygon oder auf Kante)
-    for (const corner of corners) {
-        let onEdge = false;
-        for (const edge of allEdges) {
-            if (isPointOnSegment(corner, edge)) {
-                onEdge = true;
-                break;
-            }
-        }
-        if (!onEdge && !isPointInside(corner, verticalEdges)) {
-            return false;
-        }
+    if (corners.some(p => !checkPoint(allEdges, p, verticalEdges))) {
+        return false
     }
 
     // Prüfe zusätzliche Punkte auf jeder Rechteckkante, reicht hier für das problem aus, sauber: alle Punkte der Kante prüfen
     const rectEdges = getRectEdges(p1, p2);
     for (const [[x1, y1], [x2, y2]] of rectEdges) {
         // Prüfe Mittelpunkt und Viertelpunkte jeder Kante
-        const points: [number, number][] = [
+        const points: TCoordinate[] = [
             [(x1 + x2) / 2, (y1 + y2) / 2], // Mittelpunkt
             [(3 * x1 + x2) / 4, (3 * y1 + y2) / 4], // 1/4 Punkt
             [(x1 + 3 * x2) / 4, (y1 + 3 * y2) / 4], // 3/4 Punkt
         ];
-
-        for (const point of points) {
-            let onEdge = false;
-            for (const edge of allEdges) {
-                if (isPointOnSegment(point, edge)) {
-                    onEdge = true;
-                    break;
-                }
-            }
-            if (!onEdge && !isPointInside(point, verticalEdges)) {
-                return false;
-            }
+        if (points.some(p => !checkPoint(allEdges, p, verticalEdges))) {
+            return false
         }
+
     }
 
     // Prüfe Schnittpunkte
@@ -164,7 +163,7 @@ const solve = (data: string) => {
     }
     console.log(`Max Area between two tiles: ${maxArea}`);
 
-    const edges: [[number, number], [number, number]][] = [];
+    const edges: TEdge[] = [];
     for (let i = 0; i < tiles.length; i++) {
         const from = tiles[i];
         const to = tiles[(i + 1) % tiles.length];
@@ -175,7 +174,7 @@ const solve = (data: string) => {
     let maxAreaInside = 0;
     for (const [p1, p2] of pairedTiles) {
         const area = rectArea(p1, p2);
-        if (area > maxAreaInside &&  isRectInsidePolygon(p1, p2, verticalEdges, edges)) {
+        if (area > maxAreaInside && isRectInsidePolygon(p1, p2, verticalEdges, edges)) {
             maxAreaInside = area;
         }
     }
