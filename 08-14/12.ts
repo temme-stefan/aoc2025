@@ -192,15 +192,14 @@ const solve = (data: string) => {
             console.log("Region too small:", width + "x" + height, needed);
             continue; //hartes Kriterium um schnell viele Regionen zu verwerfen
         }
-        // /*
-           console.log("doing it the hardway")
-
-        /*/
-        else {
-            validRegions++ //Das reicht aus...
+        const trivialBlocks = Math.floor(width/3)*Math.floor((height)/3); //Anzahl der 3x3 Blöcke
+        const trivialNeeded = needed.reduce((a,b)=>a+b,0);
+        if(trivialBlocks>=trivialNeeded){
+            console.log("Region big enough for trivial placement:", width + "x" + height, needed);
+            validRegions++
             continue
         }
-        //*/
+        console.log("doing it the hardway")
         const getMapKey = (map: Region) => map.getHash();
         const getNeededKey = (needed: number[]) => needed.join(",");
 
